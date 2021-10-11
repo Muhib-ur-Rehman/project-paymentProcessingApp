@@ -12,12 +12,19 @@ import org.springframework.context.annotation.Configuration;
 public class PaymentConfig {
     public static final String QUEUE = "order_queue";
     public static final String PAYMENT_QUEUE = "payment_queue";
+    public static final String INVENTORY_QUEUE = "inventory_queue";
     public static final String EXCHANGE= "order_exchange";
     public static final String ROUTING_KEY= "order_routingKey";
+    public static final String INVENTORY_ROUTING_KEY= "inventory_routingKey";
 
     @Bean
     public Queue paymentQueue (){
         return new Queue(QUEUE);
+    }
+
+    @Bean
+    public Queue inventoryQueue (){
+        return new Queue(INVENTORY_QUEUE);
     }
 
     @Bean
@@ -26,8 +33,13 @@ public class PaymentConfig {
     }
 
     @Bean
-    public Binding paymentBinding(Queue queue, TopicExchange exchange){
-        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
+    public Binding paymentBinding(TopicExchange exchange){
+        return BindingBuilder.bind(paymentQueue()).to(exchange).with(ROUTING_KEY);
+    }
+
+    @Bean
+    public Binding inventoryBinding(TopicExchange exchange){
+        return BindingBuilder.bind(inventoryQueue()).to(exchange).with(INVENTORY_ROUTING_KEY);
     }
 
     @Bean
