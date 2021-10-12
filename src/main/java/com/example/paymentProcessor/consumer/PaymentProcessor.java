@@ -20,6 +20,7 @@ public class PaymentProcessor {
         if (accNum.charAt(0)=='1' && accNum.charAt(accNum.length()-1)=='5') {
             order.setPaymentStatus("ACCEPTED");
             order.setOrderStatus("ACCEPTED");
+            template.convertAndSend(PaymentConfig.EXCHANGE,PaymentConfig.INVENTORY_ROUTING_KEY,order);
         }
         else {
             order.setPaymentStatus("REJECTED");
