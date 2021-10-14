@@ -13,6 +13,10 @@ public class PaymentProcessor {
     @Autowired
     private RabbitTemplate template;
 
+    public PaymentProcessor(RabbitTemplate template){
+        this.template=template;
+    }
+
     @RabbitListener(queues = PaymentConfig.PAYMENT_QUEUE)
     public void consumeMessageFromQueue(OrderInfo order){
         System.out.println("Message received from queue : " + order);
